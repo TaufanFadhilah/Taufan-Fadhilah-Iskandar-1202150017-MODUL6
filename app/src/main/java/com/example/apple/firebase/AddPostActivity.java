@@ -10,8 +10,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -20,6 +26,10 @@ public class AddPostActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMG = 1;
     private ImageView mImageView;
+    private EditText mTitle, mCaption;
+    private DatabaseReference mDatabase;
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +39,21 @@ public class AddPostActivity extends AppCompatActivity {
 
 
         mImageView = (ImageView)findViewById(R.id.add_img);
+        mTitle = (EditText)findViewById(R.id.add_title);
+        mCaption = (EditText)findViewById(R.id.add_caption);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
+        user = new User(userAuth.getUid());
+
+        Toast.makeText(this,user.getUid(),Toast.LENGTH_SHORT).show();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                saveData(mTitle.getText().toString(), mCaption.getText().toString());
             }
         });
     }
@@ -64,5 +83,12 @@ public class AddPostActivity extends AppCompatActivity {
         }else {
             Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void saveData(String title, String caption){
+
+        Post post = new Post(user.getUid(),title, caption);
+        mDatabase.child("posts").push().setValue(post);
+        Toast.makeText(this, "Uploaded",Toast.LENGTH_SHORT).show();
     }
 }
