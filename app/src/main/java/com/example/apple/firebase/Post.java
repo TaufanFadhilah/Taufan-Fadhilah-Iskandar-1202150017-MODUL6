@@ -5,17 +5,18 @@ package com.example.apple.firebase;
  */
 
 public class Post {
-    private String user_id, title, caption;
+    private String user_id, title, caption, path;
 
     public Post(String title, String caption) {
         this.title = title;
         this.caption = caption;
     }
 
-    public Post(String user_id, String title, String caption) {
+    public Post(String user_id, String title, String caption, String path) {
         this.user_id = user_id;
         this.title = title;
         this.caption = caption;
+        this.path = path;
     }
 
     public void setCaption(String caption) {
@@ -30,6 +31,10 @@ public class Post {
         this.user_id = user_id;
     }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public String getCaption() {
         return caption;
     }
@@ -40,5 +45,9 @@ public class Post {
 
     public String getUser_id() {
         return user_id;
+    }
+
+    public String getPath() {
+        return path;
     }
 }
