@@ -26,10 +26,6 @@
             <!--android:name=".LoginActivity"-->
             <!--android:label="@string/title_activity_login" />-->
         <activity android:name=".RegisterActivity" />
-        <activity
-            android:name=".MainMenuActivity"
-            android:label="@string/title_activity_main_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
